@@ -1,0 +1,9 @@
+plugin/package.json
+plugin/vcd-node-driver-0.1.0.umd.min.2.js
+plugin/vcd-node-driver-0.1.0.umd.min.2.js.map
+plugin/vcd-node-driver-0.1.0.umd.min.3.js
+plugin/vcd-node-driver-0.1.0.umd.min.3.js.map
+plugin/vcd-node-driver-0.1.0.umd.min.cloud-credential.js
+plugin/vcd-node-driver-0.1.0.umd.min.cloud-credential.js.map
+plugin/vcd-node-driver-0.1.0.umd.min.js
+plugin/vcd-node-driver-0.1.0.umd.min.js.map
