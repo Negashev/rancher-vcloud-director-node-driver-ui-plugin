@@ -1,9 +1,0 @@
-plugin/node-driver-0.1.0.umd.min.2.js
-plugin/node-driver-0.1.0.umd.min.2.js.map
-plugin/node-driver-0.1.0.umd.min.3.js
-plugin/node-driver-0.1.0.umd.min.3.js.map
-plugin/node-driver-0.1.0.umd.min.cloud-credential.js
-plugin/node-driver-0.1.0.umd.min.cloud-credential.js.map
-plugin/node-driver-0.1.0.umd.min.js
-plugin/node-driver-0.1.0.umd.min.js.map
-plugin/package.json
