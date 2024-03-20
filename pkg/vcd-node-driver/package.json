@@ -1,5 +1,5 @@
 {
-  "name": "vcd",
+  "name": "vcd-node-driver",
   "description": "vCloud Director node-driver plugin for rancher",
   "version": "0.1.0",
   "private": false,
@@ -8,6 +8,7 @@
       "catalog.cattle.io/rancher-version": ">= v2.8.2"
     }
   },
+  "icon": "https://raw.githubusercontent.com/Negashev/rancher-vcloud-director-node-driver-ui-plugin/main/pkg/vcd-node-driver/vcd.svg",
   "scripts": {
     "dev": "./node_modules/.bin/nuxt dev",
     "nuxt": "./node_modules/.bin/nuxt"
