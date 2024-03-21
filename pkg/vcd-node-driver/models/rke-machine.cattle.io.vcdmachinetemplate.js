@@ -7,10 +7,10 @@ export default class VcdMachineTemplate extends MachineTemplate {
   }
 
   get providerLocation() {
-    return this.spec.template.spec.org;
+    return this.spec.template.spec.vdc;
   }
 
   get providerSize() {
-    return this.spec.template.spec.cpuCount + 'x' + this.spec.template.spec.memorySize;
+    return this.spec.template.spec.cpuCount + 'x' + (this.spec.template.spec.memorySize / 1024).toFixed(1) + 'x' + (this.spec.template.spec.diskSize / 1024).toFixed(1);
   }
 }

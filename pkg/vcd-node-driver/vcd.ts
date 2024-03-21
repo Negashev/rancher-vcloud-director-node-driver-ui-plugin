@@ -42,6 +42,13 @@ export class Vcd {
       return u?.host || '';
     }
 
+    public getDeepKey(from: any, selectors: string) {
+      return selectors.replace(/\[([^\[\]]*)\]/g, '.$1.')
+        .split('.')
+        .filter(t => t !== '')
+        .reduce((prev, cur) => prev && prev[cur], from)
+    }
+
     public async getToken() {
       const url = `/meta/proxy/${ this.protocolHostname(this.href) }/cloudapi/1.0.0/sessions`;
 
@@ -76,29 +83,46 @@ export class Vcd {
       }
     }
 
-    public async getFlavors(value: any, initial?: string) {
-      return await this.getOptions(value, '/flavors', 'flavors', undefined, initial);
+    public async getCatalog(value: any, initial?: string) {
+      return await this.getOptions(value, '/query?type=catalog', 'record', undefined, initial);
     }
 
-    public async getAvailabilityZones(value: any, initial?: string) {
-      return await this.getOptions(value, '/os-availability-zone', 'availabilityZoneInfo', (zone: any) => {
+    public async getTemplate(value: any, catalog: string, initial?: string) {
+      return await this.getOptions(value, `/query?type=vAppTemplate&filter=(catalogName==${ catalog })`, 'record', undefined, initial);
+    }
+
+    public async getNetwork(value: any, initial?: string) {
+      return await this.getOptions(value, `/cloudapi/1.0.0/orgVdcNetworks?filterEncoded=true&filter=((crossVdcNetworkId==null))`, 'values', undefined, initial, true);
+    }
+
+    public async getStorage(value: any, initial?: string) {
+      return await this.getOptions(value, '/query?type=orgVdcStorageProfile', 'record', undefined, initial);
+    }
+
+    public async getVAppVms(value: any, api: string, initial?: string) {
+      return await this.getOptions(value, parseUrl(api).path.replace(/^\/api/, ''), 'children.vm', (vm: any) => {
+        const vmx = vm.section.find((section: any)=> section._type === 'VmSpecSectionType');
+
         return {
-          ...zone,
-          name: zone.zoneName
+          ...vm,
+          osType:              vmx.osType,
+          hardwareVersionHref: vmx.hardwareVersion.href
         };
       }, initial);
     }
 
-    public async getOptions(value: any, api: string, field: string, mapper?: Function, initial?: string) {
-      // We are fetching the data for the options
-      value.busy = true;
-      value.enabled = true;
-      value.selected = '';
+    public async getOperatingSystem(value: any, api: string, initial?: string) {
+      return await this.getOptions(value, parseUrl(api).path.replace(/^\/api/, ''), 'supportedOperatingSystems.operatingSystemFamilyInfo[1].operatingSystem', (os: any) => {
+        return {
+          ...os,
+          name: os.internalName
+        };
+      }, initial);
+    }
 
-      const res = await this.makeComputeRequest(api);
-
-      if (res && (res as any)[field]) {
-        let list = (res as any)[field] || [];
+    public setOptions(res: any, value: any, field: string, mapper?: Function, initial?: string) {
+      if (res) {
+        let list = this.getDeepKey(res, field) || [];
 
         if (mapper) {
           list = list.map((k: any) => mapper(k));
@@ -126,12 +150,27 @@ export class Vcd {
       }
     }
 
-    public async makeComputeRequest(api: string) {
-      const href = this.href.replace(/^https?:\/\//, '');
+    public async getOptions(value: any, api: string, field: string, mapper?: Function, initial?: string, domain?: boolean) {
+      // We are fetching the data for the options
+      value.busy = true;
+      value.enabled = true;
+      value.selected = '';
+
+      const res = await this.makeComputeRequest(api, domain);
+
+      this.setOptions(res, value, field, mapper, initial);
+    }
+
+    public async makeComputeRequest(api: string, domain?: boolean) {
+      const href = domain ? parseUrl(this.href).host : this.href.replace(/^https?:\/\//, '');
+
       const baseUrl = `/meta/proxy/${ href }`;
       const url = `${ baseUrl }${ api }`;
 
-      const headers = {
+      const headers = domain ? {
+        Accept:        'application/json;multisite=global;version=' + this.version,
+        'X-API-Auth-Header': 'Bearer ' + this.token
+      } : {
         Accept:        'application/*+json;version=' + this.version,
         'X-API-Auth-Header': 'Bearer ' + this.token
       };
@@ -168,31 +207,6 @@ export class Vcd {
         }, { root: true });
         
         return res?.orgVdcReference;
-      } catch (e) {
-        console.error(e); // eslint-disable-line no-console
-
-        return { error: e };
-      }
-    }
-
-    public async getRegions() {
-      const href = this.href.replace(/^https?:\/\//, '');
-      const baseUrl = `/meta/proxy/${ href }`;
-
-      const headers = {
-        Accept:        'application/*;version=' + this.version,
-        'X-API-Auth-Header': 'Bearer ' + this.token
-      };
-
-      try {
-        const res = await this.$dispatch('management/request', {
-          url:                  `${ baseUrl }/regions`,
-          headers,
-          method:               'GET',
-          redirectUnauthorized: false,
-        }, { root: true });
-
-        return res?.regions;
       } catch (e) {
         console.error(e); // eslint-disable-line no-console
 
