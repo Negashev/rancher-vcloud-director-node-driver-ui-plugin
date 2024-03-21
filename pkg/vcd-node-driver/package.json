@@ -1,7 +1,7 @@
 {
   "name": "vcd-node-driver",
   "description": "vCloud Director node-driver plugin for rancher",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": false,
   "rancher": {
     "annotations": {

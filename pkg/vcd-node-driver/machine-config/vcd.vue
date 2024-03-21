@@ -140,9 +140,9 @@ export default {
       storprofile:             initOptions(),
       vAppVms:                 initOptions(),
       ipaddressallocationmode: initOptions(),
-      memorySize:              this.value?.memorySize || 4096,
-      diskSize:                this.value?.diskSize || 20480,
-      cpuCount:                this.value?.cpuCount || 2,
+      memorySize:              this.value?.memorySize || '4096',
+      diskSize:                this.value?.diskSize || '20480',
+      cpuCount:                this.value?.cpuCount || '2',
       sshUser:                 this.value?.sshUser || 'docker',
       initData:                this.value?.initData || null,
       userData:                this.value?.userData || null,
@@ -362,7 +362,7 @@ export default {
             :mode="mode"
             :disabled="busy"
             :required="true"
-            output-as="number"
+            output-as="string"
             label="CPU"
             suffix="Cores"
           />
@@ -375,7 +375,7 @@ export default {
             :mode="mode"
             :disabled="busy"
             :required="true"
-            output-as="number"
+            output-as="string"
             label="Memory"
             suffix="MB"
           />
@@ -388,7 +388,7 @@ export default {
             :mode="mode"
             :disabled="busy"
             :required="true"
-            output-as="number"
+            output-as="string"
             label="Disk size"
             suffix="MB"
           />
