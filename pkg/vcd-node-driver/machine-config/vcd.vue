@@ -231,9 +231,11 @@ export default {
       this.value.networkadaptertype = this.networkadaptertype.selected?.name;
 
       this.value.ipaddressallocationmode = this.ipaddressallocationmode.selected?.name;
+
       this.value.cpuCount = this.cpuCount;
       this.value.memorySize = this.memorySize;
       this.value.diskSize = this.diskSize;
+
       this.value.sshUser = this.sshUser;
       this.value.initData = this.initData;
       this.value.userData = this.userData;
@@ -360,6 +362,7 @@ export default {
             :mode="mode"
             :disabled="busy"
             :required="true"
+            output-as="number"
             label="CPU"
             suffix="Cores"
           />
@@ -372,6 +375,7 @@ export default {
             :mode="mode"
             :disabled="busy"
             :required="true"
+            output-as="number"
             label="Memory"
             suffix="MB"
           />
@@ -384,6 +388,7 @@ export default {
             :mode="mode"
             :disabled="busy"
             :required="true"
+            output-as="number"
             label="Disk size"
             suffix="MB"
           />
