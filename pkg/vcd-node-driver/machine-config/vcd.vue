@@ -305,7 +305,7 @@ export default {
             label="vApp template"
             :options="catalogitem.options"
             :disabled="!catalogs.enabled && !catalogitem.enabled"
-            :loading="catalogitem.busy || catalogs.busy"
+            :loading="catalogitem.busy || catalogs.busy || busy"
             :searchable="false"
           />
         </div>
@@ -327,7 +327,7 @@ export default {
             label="Network Adapter"
             :options="networkadaptertype.options"
             :disabled="!catalogitem.enabled && !networkadaptertype.enabled && !vAppVms.enabled && !operatingSystem.enabled"
-            :loading="networkadaptertype.busy || catalogitem.busy || vAppVms.busy || operatingSystem.busy"
+            :loading="networkadaptertype.busy || catalogitem.busy || vAppVms.busy || operatingSystem.busy || busy"
             :searchable="false"
           />
         </div>
