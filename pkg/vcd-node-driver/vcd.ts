@@ -84,19 +84,19 @@ export class Vcd {
     }
 
     public async getCatalog(value: any, initial?: string) {
-      return await this.getOptions(value, '/query?type=catalog', 'record', undefined, initial);
+      return await this.getOptions(value, '/query?type=catalog&pageSize=1000', 'record', undefined, initial);
     }
 
     public async getTemplate(value: any, catalog: string, initial?: string) {
-      return await this.getOptions(value, `/query?type=vAppTemplate&filter=(catalogName==${ catalog })`, 'record', undefined, initial);
+      return await this.getOptions(value, `/query?type=vAppTemplate&pageSize=1000&filter=(catalogName==${ catalog })`, 'record', undefined, initial);
     }
 
     public async getNetwork(value: any, initial?: string) {
-      return await this.getOptions(value, `/cloudapi/1.0.0/orgVdcNetworks?filterEncoded=true&filter=((crossVdcNetworkId==null))`, 'values', undefined, initial, true);
+      return await this.getOptions(value, `/cloudapi/1.0.0/orgVdcNetworks?filterEncoded=true&pageSize=1000&filter=((crossVdcNetworkId==null))`, 'values', undefined, initial, true);
     }
 
     public async getStorage(value: any, initial?: string) {
-      return await this.getOptions(value, '/query?type=orgVdcStorageProfile', 'record', undefined, initial);
+      return await this.getOptions(value, '/query?type=orgVdcStorageProfile&pageSize=1000', 'record', undefined, initial);
     }
 
     public async getVAppVms(value: any, api: string, initial?: string) {
