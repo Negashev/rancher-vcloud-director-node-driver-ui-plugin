@@ -168,8 +168,6 @@ export class Vcd {
             page = res.page + 1;
             res = await this.makeComputeRequest(api + '&page=' + page, domain);
             totalResults[field] = totalResults[field].concat(res[field]);
-            console.log(totalResults);
-            loopPages = false;
           } else {
             loopPages = false;
           }
