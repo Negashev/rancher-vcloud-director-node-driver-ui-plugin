@@ -92,7 +92,7 @@ export class Vcd {
     }
 
     public async getNetwork(value: any, initial?: string) {
-      return await this.getOptions(value, `/cloudapi/1.0.0/orgVdcNetworks?filterEncoded=true&pageSize=1000&filter=((crossVdcNetworkId==null))`, 'values', undefined, initial, true);
+      return await this.getOptions(value, `/cloudapi/1.0.0/orgVdcNetworks?filterEncoded=true&pageSize=20&filter=((crossVdcNetworkId==null))`, 'values', undefined, initial, true);
     }
 
     public async getStorage(value: any, initial?: string) {
@@ -156,9 +156,27 @@ export class Vcd {
       value.enabled = true;
       value.selected = '';
 
-      const res = await this.makeComputeRequest(api, domain);
+      let loopPages = true;
 
-      this.setOptions(res, value, field, mapper, initial);
+      let res = await this.makeComputeRequest(api, domain);
+      let totalResults = res;
+      let page = 1;
+
+      if (res?.pageCount) {
+        while (loopPages) {
+          if (res?.pageCount > res?.page) {
+            page = res.page + 1;
+            res = await this.makeComputeRequest(api + '&page=' + page, domain);
+            totalResults[field] = totalResults[field].concat(res[field]);
+            console.log(totalResults);
+            loopPages = false;
+          } else {
+            loopPages = false;
+          }
+        }
+      }
+
+      this.setOptions(totalResults, value, field, mapper, initial);
     }
 
     public async makeComputeRequest(api: string, domain?: boolean) {
