@@ -96,7 +96,11 @@ export class Vcd {
     }
 
     public async getStorage(value: any, initial?: string) {
-      return await this.getOptions(value, '/query?type=orgVdcStorageProfile&pageSize=1000', 'record', undefined, initial);
+      return await this.getOptions(value, '/query?type=orgVdcStorageProfile&pageSize=1000', 'record', (storage: any) => {
+        if (storage.vdcName === this.vdc) {
+          return storage;
+        }
+      }, initial);
     }
 
     public async getVAppVms(value: any, api: string, initial?: string) {
@@ -233,7 +237,7 @@ export class Vcd {
     private convertToOptions(list: any) {
       const sorted = (list || []).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-      return sorted.map((p: any) => {
+      return sorted.filter(item => item !== undefined).map((p: any) => {
         return {
           label: p.name,
           value: p
