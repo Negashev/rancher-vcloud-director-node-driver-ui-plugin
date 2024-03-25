@@ -1,6 +1,6 @@
 {
   "name": "rancher-vcloud-director-node-driver-ui-plugin",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "private": false,
   "engines": {
     "node": ">=12"

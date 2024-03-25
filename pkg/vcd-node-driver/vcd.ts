@@ -39,6 +39,7 @@ export class Vcd {
 
     public protocolHostname(href: string) {
       const u = parseUrl(href);
+
       return u?.host || '';
     }
 
@@ -46,15 +47,15 @@ export class Vcd {
       return selectors.replace(/\[([^\[\]]*)\]/g, '.$1.')
         .split('.')
         .filter(t => t !== '')
-        .reduce((prev, cur) => prev && prev[cur], from)
+        .reduce((prev, cur) => prev && prev[cur], from);
     }
 
     public async getToken() {
       const url = `/meta/proxy/${ this.protocolHostname(this.href) }/cloudapi/1.0.0/sessions`;
 
-      const headers = { 
-        Accept: 'application/*;version=' + this.version,
-        'X-API-Auth-Header': 'Basic ' + btoa(this.username + '@' + this.org + ':' + this.password)
+      const headers = {
+        Accept:              `application/*;version=${ this.version }`,
+        'X-API-Auth-Header': `Basic ${ btoa(`${ this.username }@${ this.org }:${ this.password }`) }`
       };
 
       try {
@@ -105,7 +106,7 @@ export class Vcd {
 
     public async getVAppVms(value: any, api: string, initial?: string) {
       return await this.getOptions(value, parseUrl(api).path.replace(/^\/api/, ''), 'children.vm', (vm: any) => {
-        const vmx = vm.section.find((section: any)=> section._type === 'VmSpecSectionType');
+        const vmx = vm.section.find((section: any) => section._type === 'VmSpecSectionType');
 
         return {
           ...vm,
@@ -163,14 +164,14 @@ export class Vcd {
       let loopPages = true;
 
       let res = await this.makeComputeRequest(api, domain);
-      let totalResults = res;
+      const totalResults = res;
       let page = 1;
 
       if (res?.pageCount) {
         while (loopPages) {
           if (res?.pageCount > res?.page) {
             page = res.page + 1;
-            res = await this.makeComputeRequest(api + '&page=' + page, domain);
+            res = await this.makeComputeRequest(`${ api }&page=${ page }`, domain);
             totalResults[field] = totalResults[field].concat(res[field]);
           } else {
             loopPages = false;
@@ -188,11 +189,11 @@ export class Vcd {
       const url = `${ baseUrl }${ api }`;
 
       const headers = domain ? {
-        Accept:        'application/json;multisite=global;version=' + this.version,
-        'X-API-Auth-Header': 'Bearer ' + this.token
+        Accept:              `application/json;multisite=global;version=${ this.version }`,
+        'X-API-Auth-Header': `Bearer ${ this.token }`
       } : {
-        Accept:        'application/*+json;version=' + this.version,
-        'X-API-Auth-Header': 'Bearer ' + this.token
+        Accept:              `application/*+json;version=${ this.version }`,
+        'X-API-Auth-Header': `Bearer ${ this.token }`
       };
 
       try {
@@ -214,8 +215,8 @@ export class Vcd {
       const baseUrl = `/meta/proxy/${ href }`;
 
       const headers = {
-        Accept:        'application/*+json;version=' + this.version,
-        'X-API-Auth-Header': 'Bearer ' + this.token
+        Accept:              `application/*+json;version=${ this.version }`,
+        'X-API-Auth-Header': `Bearer ${ this.token }`
       };
 
       try {
@@ -225,7 +226,7 @@ export class Vcd {
           method:               'GET',
           redirectUnauthorized: false,
         }, { root: true });
-        
+
         return res?.orgVdcReference;
       } catch (e) {
         console.error(e); // eslint-disable-line no-console
@@ -235,9 +236,11 @@ export class Vcd {
     }
 
     private convertToOptions(list: any) {
-      const sorted = (list || []).sort((a: any, b: any) => a.name.localeCompare(b.name));
+      let sorted = (list || []).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-      return sorted.filter(item => item !== undefined).map((p: any) => {
+      sorted = sorted.filter((item: undefined) => item !== undefined);
+
+      return sorted.map((p: any) => {
         return {
           label: p.name,
           value: p
