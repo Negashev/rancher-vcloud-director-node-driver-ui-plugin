@@ -11,6 +11,26 @@ entries:
       catalog.cattle.io/scope: management
       catalog.cattle.io/ui-component: plugins
     apiVersion: v2
+    appVersion: 0.2.9
+    created: "2024-03-26T15:25:12.342475774Z"
+    description: vCloud Director node-driver plugin for rancher
+    digest: f2359d0574ce993e07fc96a222fc398a9d50fbda99389f89279e8fcb17cfde71
+    icon: https://raw.githubusercontent.com/Negashev/rancher-vcloud-director-node-driver-ui-plugin/main/pkg/vcd-node-driver/vcd.svg
+    name: vcd-node-driver
+    type: application
+    urls:
+    - assets/vcd-node-driver/vcd-node-driver-0.2.9.tgz
+    version: 0.2.9
+  - annotations:
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/kube-version: '>= 1.16.0-0 < 1.29.0-0'
+      catalog.cattle.io/namespace: cattle-ui-plugin-system
+      catalog.cattle.io/os: linux
+      catalog.cattle.io/permits-os: linux, windows
+      catalog.cattle.io/rancher-version: '>= v2.8.2'
+      catalog.cattle.io/scope: management
+      catalog.cattle.io/ui-component: plugins
+    apiVersion: v2
     appVersion: 0.2.8
     created: "2024-03-25T12:44:48.384433406Z"
     description: vCloud Director node-driver plugin for rancher
@@ -201,4 +221,4 @@ entries:
     urls:
     - assets/vcd-node-driver/vcd-node-driver-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-25T12:44:48.383808381Z"
+generated: "2024-03-26T15:25:12.342152068Z"
