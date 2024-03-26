@@ -122,7 +122,6 @@ export default {
       vcd.getStorage(this.storprofile, this.value?.storprofile);
     });
 
-    this.$emit('validationChanged', true);
   },
 
   data() {
@@ -161,34 +160,42 @@ export default {
     },
     'catalogs.selected': {
       handler(val, oldVal) {
+        this.$emit('validationChanged', false);
         if (val.name === undefined) {
           return;
         }
         this.vcd.getTemplate(this.catalogitem, val.name, this.value?.catalogitem);
+        this.$emit('validationChanged', true);
       }
     },
     'catalogitem.selected': {
       handler(val, oldVal) {
+        this.$emit('validationChanged', false);
         if (val.name === undefined) {
           return;
         }
         this.vcd.getVAppVms(this.vAppVms, val.href);
+        this.$emit('validationChanged', true);
       }
     },
     'vAppVms.selected': {
       handler(val, oldVal) {
+        this.$emit('validationChanged', false);
         if (val.osType === undefined) {
           return;
         }
         this.vcd.getOperatingSystem(this.operatingSystem, val.hardwareVersionHref, val.osType);
+        this.$emit('validationChanged', true);
       }
     },
     'operatingSystem.selected': {
       handler(val, oldVal) {
+        this.$emit('validationChanged', false);
         if (val.name === undefined) {
           return;
         }
         this.vcd.setOptions(val, this.networkadaptertype, 'supportedNICType', undefined, this.value?.networkadaptertype);
+        this.$emit('validationChanged', true);
       }
     }
   },
