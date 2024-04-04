@@ -1,13 +1,12 @@
 import MachineTemplate from '@shell/models/rke-machine.cattle.io.machinetemplate';
 
 export default class VcdMachineTemplate extends MachineTemplate {
-
   get provider() {
     return 'vcd';
   }
 
   get providerLocation() {
-    return this.spec.template.spec.vdc;
+    return this.spec.template.spec.catalogitem + ' - ' + this.spec.template.spec.storprofile;
   }
 
   get providerSize() {

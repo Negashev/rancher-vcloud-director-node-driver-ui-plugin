@@ -65,7 +65,6 @@ export default {
       });
     },
 
-
     hostname() {
       const u = parseUrl(this.value.decodedData.href);
 
@@ -94,7 +93,7 @@ export default {
       this.value.annotations['vcd.cattle.io/org'] = this.value.decodedData.org;
       this.value.annotations['vcd.cattle.io/href'] = this.value.decodedData.href;
 
-      if (this.vdc) {
+      if (this.vdc !== '') {
         this.value.annotations['vcd.cattle.io/vdc'] = this.vdc;
       }
 
@@ -191,9 +190,7 @@ export default {
         }
       } else {
         const vdcs = await vcd.getVdcs();
-        // console.log(vdcs);
-        // this.$set(this, 'vdcs', vdcs);
-        // okay = true;
+
         if (!vdcs.error) {
           this.$set(this, 'vdcs', vdcs);
           okay = true;
@@ -314,6 +311,7 @@ export default {
           label-key="driver.vcd.auth.fields.vdc"
           :options="vdcOptions"
           :searchable="false"
+          @input="value.setData('vdc', $event);"
         />
       </div>
     </div>
