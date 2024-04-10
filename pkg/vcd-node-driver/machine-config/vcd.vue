@@ -120,6 +120,7 @@ export default {
       vcd.getCatalog(this.catalogs, this.value?.catalog);
       vcd.getNetwork(this.orgvdcnetwork, this.value?.orgvdcnetwork);
       vcd.getStorage(this.storprofile, this.value?.storprofile);
+      this.$set(this, 'vappName', this.vappName || vcd.vappName);
     });
 
   },
@@ -150,6 +151,7 @@ export default {
       publicip:                this.value?.publicip || null,
       rke2:                    this.value?.rke2 || true,
       insecure:                this.value?.insecure || false,
+      vappName:                this.value?.vappName,
       errors:                  null,
     };
   },
@@ -250,6 +252,8 @@ export default {
       this.value.vdcedgegateway = this.vdcedgegateway;
       this.value.publicip = this.publicip;
       this.value.insecure = this.insecure;
+      
+      this.value.vappName = this.vappName;
 
       // Not configurable
       this.value.sshPort = '22';
@@ -458,6 +462,16 @@ export default {
             label="Public IP to use"
           />
         </div>
+        <div class="col span-6">
+          <LabeledInput
+            v-model="vappName"
+            :mode="mode"
+            :disabled=true
+            label="vApp"
+          />
+        </div>
+      </div>
+      <div class="row mt-10">
         <div class="col span-6">
           <Checkbox
             v-model="insecure"

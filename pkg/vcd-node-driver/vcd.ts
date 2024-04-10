@@ -12,6 +12,7 @@ export class Vcd {
     public orgId: string = '';
     public version: string = '36.0';
     public vdc: string = '';
+    public vappName: string = '';
     public token: string = '';
 
     private $dispatch: any;
@@ -228,6 +229,31 @@ export class Vcd {
         }, { root: true });
 
         return res?.orgVdcReference;
+      } catch (e) {
+        console.error(e); // eslint-disable-line no-console
+
+        return { error: e };
+      }
+    }
+
+    public async getVApps() {
+      const href = this.href.replace(/^https?:\/\//, '');
+      const baseUrl = `/meta/proxy/${ href }`;
+
+      const headers = {
+        Accept:              `application/*+json;version=${ this.version }`,
+        'X-API-Auth-Header': `Bearer ${ this.token }`
+      };
+
+      try {
+        const res = await this.$dispatch('management/request', {
+          url:                  `${ baseUrl }/query?type=vApp&pageSize=1000`,
+          headers,
+          method:               'GET',
+          redirectUnauthorized: false,
+        }, { root: true });
+
+        return res?.record;
       } catch (e) {
         console.error(e); // eslint-disable-line no-console
 

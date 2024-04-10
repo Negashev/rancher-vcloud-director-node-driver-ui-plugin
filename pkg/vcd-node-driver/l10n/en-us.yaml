@@ -11,12 +11,14 @@ driver:
         href: vCloud Director href
         org: Organization
         vdc: Virtual Data center
+        vapp: vApp name
       placeholders:
         password: ($VCD_PASSWORD)
         username: ($VCD_USERNAME)
         href: e.g. https://vcd.server/api ($VCD_HREF)
         org: Organization name (tenant) ($VCD_ORG)
         vdc: Virtual Data center in tenant ($VCD_VCD)
+        vapp: vApp in tenant ($VCD_VAPP_NAME)
       errors:
         notAllowed: "Rancher could not communicate with the vCloud Director server - this may be because the server `{ hostname }` is not configured in the node driver allow list"
         badGateway: "Rancher could not communicate with the vCloud Director server - the server must use the https protocol and must have a valid SSL certificate signed by a known CA"

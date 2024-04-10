@@ -44,6 +44,8 @@ export default {
     return {
       vdcs:           null,
       vdc:            '',
+      vappNames:      null,
+      vappName:       '',
       step:           1,
       busy:           false,
       errorAllowHost: false,
@@ -57,6 +59,15 @@ export default {
     vdcOptions() {
       const sorted = (this.vdcs || []).sort((a, b) => a.name.localeCompare(b.name));
 
+      return sorted.map((p) => {
+        return {
+          label: p.name,
+          value: p.name
+        };
+      });
+    },
+    vappNamesOptions() {
+      const sorted = (this.vappNames || []).sort((a, b) => a.name.localeCompare(b.name));
       return sorted.map((p) => {
         return {
           label: p.name,
@@ -84,7 +95,7 @@ export default {
   },
 
   methods: {
-    // TODO: Validate that we can get a token for the project that the user has selected
+    // TODO: Validate that we can get a token for the vdc that the user has selected
     test() {
       // In the cluster creation flow, annotations is not set, so ensure it is set first
       this.value.annotations = this.value.annotations || {};
@@ -97,6 +108,10 @@ export default {
         this.value.annotations['vcd.cattle.io/vdc'] = this.vdc;
       }
 
+      if (this.vappName !== '') {
+        this.value.annotations['vcd.cattle.io/vappName'] = this.vappName;
+      }
+
       return true;
     },
 
@@ -105,6 +120,7 @@ export default {
     clear() {
       this.$set(this, 'step', 1);
       this.$set(this, 'vdcs', null);
+      this.$set(this, 'vappNames', null);
       this.$set(this, 'errorAllowHost', false);
 
       // Tell parent that the form is not invalid
@@ -196,10 +212,20 @@ export default {
           okay = true;
         } else {
           this.$set(this, 'error', vdcs.error.message);
+          okay = false;
+        }
+        const vappNames = await vcd.getVApps();
+        if (!vappNames.error) {
+          this.$set(this, 'vappNames', vappNames);
+          okay = true;
+        } else {
+          this.$set(this, 'error', vappNames.error.message);
+          okay = false;
         }
       }
       this.$set(this, 'busy', false);
       this.$set(this, 'vdc', this.vdcOptions[0]?.value);
+      this.$set(this, 'vappName', this.vappNamesOptions[0]?.value);
       this.$emit('validationChanged', okay);
 
       cb(okay);
@@ -312,6 +338,15 @@ export default {
           :options="vdcOptions"
           :searchable="false"
           @input="value.setData('vdc', $event);"
+        />
+      </div>
+      <div class="col span-6">
+        <LabeledSelect
+          v-model="vappName"
+          label-key="driver.vcd.auth.fields.vapp"
+          :options="vappNamesOptions"
+          :searchable="false"
+          @input="value.setData('vappName', $event);"
         />
       </div>
     </div>
