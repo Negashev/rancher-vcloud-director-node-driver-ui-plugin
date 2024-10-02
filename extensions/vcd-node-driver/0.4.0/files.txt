@@ -1,0 +1,16 @@
+plugin/img/vcd.12451ec2.svg
+plugin/package.json
+plugin/vcd-node-driver-0.4.0.umd.min.5.js
+plugin/vcd-node-driver-0.4.0.umd.min.5.js.map
+plugin/vcd-node-driver-0.4.0.umd.min.6.js
+plugin/vcd-node-driver-0.4.0.umd.min.6.js.map
+plugin/vcd-node-driver-0.4.0.umd.min.cloud-credential.js
+plugin/vcd-node-driver-0.4.0.umd.min.cloud-credential.js.map
+plugin/vcd-node-driver-0.4.0.umd.min.js
+plugin/vcd-node-driver-0.4.0.umd.min.js.map
+plugin/vcd-node-driver-0.4.0.umd.min.machine-config.js
+plugin/vcd-node-driver-0.4.0.umd.min.machine-config.js.map
+plugin/vcd-node-driver-0.4.0.umd.min.vendors~cloud-credential~machine-config.js
+plugin/vcd-node-driver-0.4.0.umd.min.vendors~cloud-credential~machine-config.js.map
+plugin/vcd-node-driver-0.4.0.umd.min.vendors~machine-config.js
+plugin/vcd-node-driver-0.4.0.umd.min.vendors~machine-config.js.map
