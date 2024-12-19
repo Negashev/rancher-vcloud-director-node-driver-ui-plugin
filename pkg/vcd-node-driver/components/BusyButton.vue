@@ -1,14 +1,5 @@
-<script lang="ts">
-import { createApp } from 'vue';
-const vueApp = createApp({});
-
-export type AsyncButtonCallback = (success: boolean) => void;
-
-interface Data {
-  busy: boolean
-}
-
-export default Vue.extend<Data, any, any, any>({
+<script>
+export default {
   props: {
     /**
      * Mode maps to keys in asyncButton.* translations
@@ -45,12 +36,12 @@ export default Vue.extend<Data, any, any, any>({
     },
   },
 
-  data(): {busy: boolean} {
+  data() {
     return { busy: false };
   },
 
   computed: {
-    displayLabel(): string {
+    displayLabel() {
       if (this.labelKey) {
         const t = this.$store.getters['i18n/t'];
 
@@ -62,7 +53,7 @@ export default Vue.extend<Data, any, any, any>({
   },
 
   methods: {
-    clicked($event: MouseEvent) {
+    clicked($event) {
       if ($event) {
         $event.stopPropagation();
         $event.preventDefault();
@@ -72,7 +63,7 @@ export default Vue.extend<Data, any, any, any>({
         return;
       }
 
-      const cb: AsyncButtonCallback = () => {
+      const cb = () => {
         this.busy = false;
       };
 
@@ -82,10 +73,10 @@ export default Vue.extend<Data, any, any, any>({
     },
 
     focus() {
-      (this.$refs.btn as HTMLElement).focus();
+      (this.$refs.btn).focus();
     }
   }
-});
+};
 </script>
 
 <template>

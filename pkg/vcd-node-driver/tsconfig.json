@@ -48,6 +48,9 @@
     "**/*.vue"
   ],
   "exclude": [
-    "../../node_modules"
+    "../../node_modules",
+    "test/**/*.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }
