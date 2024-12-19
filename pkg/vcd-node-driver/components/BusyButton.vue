@@ -1,5 +1,6 @@
 <script lang="ts">
-import Vue from 'vue';
+import { createApp } from 'vue';
+const vueApp = createApp({});
 
 export type AsyncButtonCallback = (success: boolean) => void;
 
@@ -75,7 +76,7 @@ export default Vue.extend<Data, any, any, any>({
         this.busy = false;
       };
 
-      this.$set(this, 'busy', true);
+      this['busy'] = true;
 
       this.$emit('click', cb);
     },

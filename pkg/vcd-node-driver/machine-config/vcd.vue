@@ -94,7 +94,7 @@ export default {
       console.error(e); // eslint-disable-line no-console
     }
 
-    this.$set(this, 'authenticating', true);
+    this['authenticating'] = true;
 
     const vcd = new Vcd(this.$store, this.credential);
 
@@ -105,7 +105,7 @@ export default {
     // Fetch a token - if this succeeds, kick off async fetching the lists we need
     this.vcd.getToken().then((res) => {
       if (res.error) {
-        this.$set(this, 'authenticating', false);
+        this['authenticating'] = false;
         this.$emit('validationChanged', false);
 
         this.errors.push('Unable to authenticate with the vCloud Director server');
@@ -113,14 +113,14 @@ export default {
         return;
       }
 
-      this.$set(this, 'authenticating', false);
+      this['authenticating'] = false;
       const ipaddressallocationmode = [{ name: 'NONE' }, { name: 'DHCP' }, { name: 'POOL' }, { name: 'MANUAL' }];
 
       vcd.setOptions(ipaddressallocationmode, this.ipaddressallocationmode, '', undefined, this.value?.ipaddressallocationmode);
       vcd.getCatalog(this.catalogs, this.value?.catalog);
       vcd.getNetwork(this.orgvdcnetwork, this.value?.orgvdcnetwork);
       vcd.getStorage(this.storprofile, this.value?.storprofile);
-      this.$set(this, 'vappName', this.vappName || vcd.vappName);
+      this['vappName'] = this.vappName || vcd.vappName;
     });
 
   },
@@ -302,7 +302,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledSelect
-            v-model="catalogs.selected"
+            v-model:value="catalogs.selected"
             label="Catalog"
             :options="catalogs.options"
             :disabled="!catalogs.enabled || busy"
@@ -312,7 +312,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledSelect
-            v-model="catalogitem.selected"
+            v-model:value="catalogitem.selected"
             label="vApp template"
             :options="catalogitem.options"
             :disabled="!catalogs.enabled && !catalogitem.enabled"
@@ -324,7 +324,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledSelect
-            v-model="orgvdcnetwork.selected"
+            v-model:value="orgvdcnetwork.selected"
             label="Network"
             :options="orgvdcnetwork.options"
             :disabled="!orgvdcnetwork.enabled || busy"
@@ -334,7 +334,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledSelect
-            v-model="networkadaptertype.selected"
+            v-model:value="networkadaptertype.selected"
             label="Network Adapter"
             :options="networkadaptertype.options"
             :disabled="!catalogitem.enabled && !networkadaptertype.enabled && !vAppVms.enabled && !operatingSystem.enabled"
@@ -346,7 +346,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledSelect
-            v-model="ipaddressallocationmode.selected"
+            v-model:value="ipaddressallocationmode.selected"
             label="IP Address Allocation Mode"
             :options="ipaddressallocationmode.options"
             :disabled="busy"
@@ -357,7 +357,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledSelect
-            v-model="storprofile.selected"
+            v-model:value="storprofile.selected"
             label="Storage"
             :options="storprofile.options"
             :disabled="!storprofile.enabled || busy"
@@ -369,7 +369,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <UnitInput
-            v-model="cpuCount"
+            v-model:value="cpuCount"
             :mode="mode"
             :disabled="busy"
             :required="true"
@@ -382,7 +382,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <UnitInput
-            v-model="memorySize"
+            v-model:value="memorySize"
             :mode="mode"
             :disabled="busy"
             :required="true"
@@ -395,7 +395,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <UnitInput
-            v-model="diskSize"
+            v-model:value="diskSize"
             :mode="mode"
             :disabled="busy"
             :required="true"
@@ -408,7 +408,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="sshUser"
+            v-model:value="sshUser"
             :mode="mode"
             :disabled="busy"
             :required="true"
@@ -419,7 +419,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="initData"
+            v-model:value="initData"
             :mode="mode"
             :disabled="busy"
             label="Cloud-init based User data before everything"
@@ -427,7 +427,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="userData"
+            v-model:value="userData"
             :mode="mode"
             :disabled="busy"
             label="Cloud-init based User data"
@@ -438,7 +438,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="edgegateway"
+            v-model:value="edgegateway"
             :mode="mode"
             :disabled="busy"
             label="Edge Gateway (Default is <vdc>)"
@@ -446,7 +446,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="vdcedgegateway"
+            v-model:value="vdcedgegateway"
             :mode="mode"
             :disabled="busy"
             label="Virtual Data Center Edge Gateway"
@@ -456,7 +456,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <LabeledInput
-            v-model="publicip"
+            v-model:value="publicip"
             :mode="mode"
             :disabled="busy"
             label="Public IP to use"
@@ -464,7 +464,7 @@ export default {
         </div>
         <div class="col span-6">
           <LabeledInput
-            v-model="vappName"
+            v-model:value="vappName"
             :mode="mode"
             :disabled=true
             label="vApp"
@@ -474,7 +474,7 @@ export default {
       <div class="row mt-10">
         <div class="col span-6">
           <Checkbox
-            v-model="insecure"
+            v-model:value="insecure"
             :mode="mode"
             :disabled="busy"
             label="Insecure api"

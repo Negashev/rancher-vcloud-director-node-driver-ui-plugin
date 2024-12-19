@@ -118,10 +118,10 @@ export default {
     // When the user clicked 'Edit Auth Config', clear the projects and set the step back to 1
     // so the user can modify the credentials needed to fetch the projects
     clear() {
-      this.$set(this, 'step', 1);
-      this.$set(this, 'vdcs', null);
-      this.$set(this, 'vappNames', null);
-      this.$set(this, 'errorAllowHost', false);
+      this['step'] = 1;
+      this['vdcs'] = null;
+      this['vappNames'] = null;
+      this['errorAllowHost'] = false;
 
       // Tell parent that the form is not invalid
       this.$emit('validationChanged', false);
@@ -142,7 +142,7 @@ export default {
     },
 
     async addHostToAllowList() {
-      this.$set(this, 'allowBusy', true);
+      this['allowBusy'] = true;
       const u = parseUrl(this.value.decodedData.href);
 
       this.driver.whitelistDomains = this.driver.whitelistDomains || [];
@@ -157,13 +157,13 @@ export default {
         this.$refs.connect.$el.click();
       } catch (e) {
         console.error('Could not update driver', e); // eslint-disable-line no-console
-        this.$set(this, 'allowBusy', false);
+        this['allowBusy'] = false;
       }
     },
 
     async connect(cb) {
-      this.$set(this, 'error', '');
-      this.$set(this, 'errorAllowHost', false);
+      this['error'] = '';
+      this['errorAllowHost'] = false;
 
       let okay = false;
 
@@ -178,9 +178,9 @@ export default {
         password:   this.value.decodedData.password,
       });
 
-      this.$set(this, 'allowBusy', false);
-      this.$set(this, 'step', 2);
-      this.$set(this, 'busy', true);
+      this['allowBusy'] = false;
+      this['step'] = 2;
+      this['busy'] = true;
 
       const res = await vcd.getToken();
 
@@ -188,44 +188,44 @@ export default {
         console.error(res.error); // eslint-disable-line no-console
         okay = false;
 
-        this.$set(this, 'step', 1);
-        this.$set(this, 'vdcs', null);
+        this['step'] = 1;
+        this['vdcs'] = null;
 
         if (res.error._status === 502 && !this.hostInAllowList()) {
-          this.$set(this, 'errorAllowHost', true);
+          this['errorAllowHost'] = true;
         } else {
           if (res.error._status === 502) {
             // Still got 502, even with URL in the allow list
-            this.$set(this, 'error', this.t('driver.vcd.auth.errors.badGateway'));
+            this['error'] = this.t('driver.vcd.auth.errors.badGateway');
           } else if (res.error._status === 401) {
-            this.$set(this, 'error', this.t('driver.vcd.auth.errors.unauthorized'));
+            this['error'] = this.t('driver.vcd.auth.errors.unauthorized');
           } else {
             // Generic error
-            this.$set(this, 'error', res.error.message || this.t('driver.vcd.auth.errors.other'));
+            this['error'] = res.error.message || this.t('driver.vcd.auth.errors.other');
           }
         }
       } else {
         const vdcs = await vcd.getVdcs();
 
         if (!vdcs.error) {
-          this.$set(this, 'vdcs', vdcs);
+          this['vdcs'] = vdcs;
           okay = true;
         } else {
-          this.$set(this, 'error', vdcs.error.message);
+          this['error'] = vdcs.error.message;
           okay = false;
         }
         const vappNames = await vcd.getVApps();
         if (!vappNames.error) {
-          this.$set(this, 'vappNames', vappNames);
+          this['vappNames'] = vappNames;
           okay = true;
         } else {
-          this.$set(this, 'error', vappNames.error.message);
+          this['error'] = vappNames.error.message;
           okay = false;
         }
       }
-      this.$set(this, 'busy', false);
-      this.$set(this, 'vdc', this.vdcOptions[0]?.value);
-      this.$set(this, 'vappName', this.vappNamesOptions[0]?.value);
+      this['busy'] = false;
+      this['vdc'] = this.vdcOptions[0]?.value;
+      this['vappName'] = this.vappNamesOptions[0]?.value;
       this.$emit('validationChanged', okay);
 
       cb(okay);
@@ -245,7 +245,7 @@ export default {
           placeholder-key="driver.vcd.auth.placeholders.href"
           type="text"
           :mode="mode"
-          @input="value.setData('href', $event);"
+          @update:value="value.setData('href', $event);"
         />
       </div>
       <div class="col span-6">
@@ -256,7 +256,7 @@ export default {
           placeholder-key="driver.vcd.auth.placeholders.org"
           type="text"
           :mode="mode"
-          @input="value.setData('org', $event);"
+          @update:value="value.setData('org', $event);"
         />
       </div>
     </div>
@@ -270,7 +270,7 @@ export default {
           placeholder-key="driver.vcd.auth.placeholders.username"
           type="text"
           :mode="mode"
-          @input="value.setData('username', $event);"
+          @update:value="value.setData('username', $event);"
         />
       </div>
       <div class="col span-6">
@@ -282,7 +282,7 @@ export default {
           placeholder-key="driver.vcd.auth.placeholders.password"
           type="password"
           :mode="mode"
-          @input="value.setData('password', $event);"
+          @update:value="value.setData('password', $event);"
         />
       </div>
     </div>
@@ -333,20 +333,20 @@ export default {
     >
       <div class="col span-6">
         <LabeledSelect
-          v-model="vdc"
+          v-model:value="vdc"
           label-key="driver.vcd.auth.fields.vdc"
           :options="vdcOptions"
           :searchable="false"
-          @input="value.setData('vdc', $event);"
+          @update:value="value.setData('vdc', $event);"
         />
       </div>
       <div class="col span-6">
         <LabeledSelect
-          v-model="vappName"
+          v-model:value="vappName"
           label-key="driver.vcd.auth.fields.vapp"
           :options="vappNamesOptions"
           :searchable="false"
-          @input="value.setData('vappName', $event);"
+          @update:value="value.setData('vappName', $event);"
         />
       </div>
     </div>
