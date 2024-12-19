@@ -1,0 +1,20 @@
+{
+  "name": "vcd-node-driver",
+  "description": "vCloud Director node-driver plugin for rancher",
+  "version": "0.5.0",
+  "private": false,
+  "rancher": true,
+  "icon": "https://raw.githubusercontent.com/Negashev/rancher-vcloud-director-node-driver-ui-plugin/main/pkg/vcd-node-driver/vcd.svg",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0"
+  },
+  "files": [
+    "**/*"
+  ],
+  "main": "vcd-node-driver-0.5.0.umd.min.js"
+}
