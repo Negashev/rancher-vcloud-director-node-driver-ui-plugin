@@ -35,9 +35,9 @@ entries:
       catalog.cattle.io/ui-extensions-version: '>= 3.0.0 < 4.0.0'
     apiVersion: v2
     appVersion: 0.5.0
-    created: "2024-12-19T15:25:54.227457397Z"
+    created: "2024-12-19T15:53:23.694833842Z"
     description: vCloud Director node-driver plugin for rancher
-    digest: 84afd06372bb9eef3347dcc6bfc62d3b0f2101d402a66120e20a2c4b551baee1
+    digest: d84158bbe5ed136604e6c61aaf3b8e5777b051d30cd567ba028d032f8ddcc98d
     icon: https://raw.githubusercontent.com/Negashev/rancher-vcloud-director-node-driver-ui-plugin/main/pkg/vcd-node-driver/vcd.svg
     name: vcd-node-driver
     type: application
@@ -325,4 +325,4 @@ entries:
     urls:
     - assets/vcd-node-driver/vcd-node-driver-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-19T15:25:54.227086837Z"
+generated: "2024-12-19T15:53:23.694431341Z"
