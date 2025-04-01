@@ -10,7 +10,7 @@ export default function(plugin: IPlugin): void {
 
   // Provide plugin metadata from package.json
   plugin.metadata = require('./package.json');
-  plugin.register('image', 'providers/vcd.svg', require('./vcd.svg'));
+  plugin.register('image', 'providers/vcd.png', require('./vcd.png'));
 
   // Load a product
   // plugin.addProduct(require('./product'));
